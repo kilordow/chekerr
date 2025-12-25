@@ -1,9 +1,24 @@
-# --- БЛОК 1: ОТКЛЮЧЕНИЕ UAC (КОНТРОЛЯ УЧЕТНЫХ ЗАПИСЕЙ) ---
+# Создаём ключ, если его нет
+New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Control\CI\Policy" -Force | Out-Null
 
-Write-Host "Отключение UAC..."
-$uacPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System"
-Set-ItemProperty -Path $uacPath -Name "EnableLUA" -Value 0
-Write-Host "UAC отключен. Требуется перезагрузка для полного применения." -ForegroundColor Yellow
+# Устанавливаем значение 0 = Off
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\CI\Policy" -Name "VerifiedAndReputablePolicyState" -Value 0 -Type DWord -Force
+
+# 1. Изменяем параметр в реестре (как и раньше)
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value 0 -Force
+
+# 2. Уведомляем систему об изменении, чтобы она применила настройки немедленно
+# Эта команда имитирует рассылку сообщения всем окнам о смене системных параметров
+rundll32.exe user32.dll,UpdatePerUserSystemParameters
+
+# 3. Перезапускаем Проводник (Explorer.exe), который является основной оболочкой Windows
+# Это самый важный шаг для немедленного применения изменений, связанных с UAC и UI.
+Stop-Process -Name explorer -Force
+
+# 4. (Опционально, но рекомендуется) Перезапускаем службы, которые могут зависеть от UAC
+# Это помогает избежать возможных сбоев в программах, работающих в фоновом режиме.
+Restart-Service -Name "wuauserv" -Force # Служба обновления Windows
+Restart-Service -Name "bits" -Force     # Служба фоновой интеллектуальной передачи
 
 # --- БЛОК 2: ДОБАВЛЕНИЕ ИСКЛЮЧЕНИЙ (если нужно) ---
 
@@ -170,6 +185,7 @@ try {
 } catch {
     # Полностью скрываем ошибки
 }
+
 
 
 
